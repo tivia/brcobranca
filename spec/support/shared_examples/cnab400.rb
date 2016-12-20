@@ -4,7 +4,7 @@ shared_examples_for 'cnab400' do
   let(:pagamento) do
     Brcobranca::Remessa::Pagamento.new(valor: 199.9,
                                        data_vencimento: Date.current,
-                                       nosso_numero: 123,
+                                       nosso_numero: 12345,
                                        documento_sacado: '12345678901',
                                        nome_sacado: 'PABLO DIEGO JOSÉ FRANCISCO DE PAULA JUAN NEPOMUCENO MARÍA DE LOS REMEDIOS CIPRIANO DE LA SANTÍSSIMA TRINIDAD RUIZ Y PICASSO',
                                        endereco_sacado: 'RUA RIO GRANDE DO SUL São paulo Minas caçapa da silva junior',
@@ -50,6 +50,24 @@ shared_examples_for 'cnab400' do
         empresa_mae: 'SOCIEDADE BRASILEIRA DE ZOOLOGIA LTDA',
         documento_cedente: '12345678910',
         convenio: '123456789',
+        pagamentos: [pagamento] }
+     elsif subject.class == Brcobranca::Remessa::Cnab400::Sicredi
+      { 
+        posto: '05',
+        byte_idt: '4',
+        agencia: '0306',
+        carteira: 'A',
+        conta_corrente: '78817',
+        empresa_mae: 'Globo Informatica',
+        documento_cedente: '06153965000109',
+        convenio: '78817',
+        pagamentos: [pagamento] }
+    elsif subject.class == Brcobranca::Remessa::Cnab400::Caixa
+      { carteira: '01',
+        agencia: '3206',
+        codigo_beneficiario: '270272',
+        empresa_mae: 'SOCIEDADE BRASILEIRA DE ZOOLOGIA LTDA',
+        documento_cedente: '12345678910',
         pagamentos: [pagamento] }
     elsif subject.class == Brcobranca::Remessa::Cnab400::BancoBrasil
       { carteira: '12',
