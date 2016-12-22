@@ -15,10 +15,10 @@ module Brcobranca
           case codigo_banco
           when '237'
             Brcobranca::Retorno::Cnab400::Bradesco.load_lines(file, options)
-
           when '341'
             Brcobranca::Retorno::Cnab400::Itau.load_lines(file, options)
-
+          when '748'
+            Brcobranca::Retorno::Cnab400::Sicredi.load_lines(file, options)
           else
             Brcobranca::Retorno::RetornoCnab400.load_lines(file, options)
           end

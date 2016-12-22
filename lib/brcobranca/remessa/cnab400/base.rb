@@ -60,6 +60,15 @@ module Brcobranca
         def monta_detalhe(_pagamento, _sequencial)
           raise Brcobranca::NaoImplementado, 'Sobreescreva este método na classe referente ao banco que você esta criando'
         end
+        
+       # Registro detalhe multa do arquivo remessa
+        #
+        # Este metodo deve ser sobrescrevido na classe do banco
+        #
+        def monta_detalhe_multa(_pagamento, _sequencial)
+          raise Brcobranca::NaoImplementado, 'Sobreescreva este método na classe referente ao banco que você esta criando'
+        end
+
 
         # Gera o arquivo com os registros
         #
@@ -73,6 +82,13 @@ module Brcobranca
           pagamentos.each do |pagamento|
             contador += 1
             ret << monta_detalhe(pagamento, contador)
+            if pagamento.percentual_multa > 0
+              multa = monta_detalhe_multa(pagamento, contador + 1)
+              if multa
+                ret << multa 
+                contador += 1
+              end
+            end
           end
           ret << monta_trailer(contador + 1)
 

@@ -8,6 +8,9 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Itau do
     Brcobranca::Remessa::Pagamento.new(valor: 199.9,
                                        data_vencimento: Date.current,
                                        nosso_numero: 123,
+                                       percentual_multa: 2.0,
+                                       data_multa: Date.current.next_day(1),
+                                       valor_mora: (199.0 * (0.05/100)),
                                        documento_sacado: '12345678901',
                                        nome_sacado: 'PABLO DIEGO JOSÉ FRANCISCO DE PAULA JUAN NEPOMUCENO MARÍA DE LOS REMEDIOS CIPRIANO DE LA SANTÍSSIMA TRINIDAD RUIZ Y PICASSO',
                                        endereco_sacado: 'RUA RIO GRANDE DO SUL São paulo Minas caçapa da silva junior',
@@ -170,7 +173,9 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Itau do
     context 'arquivo' do
       before { Timecop.freeze(Time.local(2015, 7, 14, 16, 15, 15)) }
       after { Timecop.return }
-
+      it 'testa arquivo' do
+        File.open("remessa_itau.REM", 'w') { |file| file.write(itau.gera_arquivo) }
+      end
       it { expect(itau.gera_arquivo).to eq(read_remessa('remessa-itau-cnab400.rem', itau.gera_arquivo)) }
     end
   end

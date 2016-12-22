@@ -118,6 +118,10 @@ module Brcobranca
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
           detalhe
         end
+        
+        def monta_detalhe_multa(pagamento, sequencial)
+          nil
+        end
   
         def monta_trailer(sequencial)
           "91748#{convenio}#{''.rjust(384, ' ')}#{sequencial.to_s.rjust(6, '0')}"

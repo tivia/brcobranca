@@ -99,8 +99,8 @@ module Brcobranca
 
           max_per_page = 3
           curr_page_position = 0
-          heigth_template = 9 # altura do template é de 9 cm
-          initial_margin_bottom = 1.4 # margin inicial abaixo
+          heigth_template = 9.6 # altura do template é de 9 cm
+          initial_margin_bottom = 1.3 # margin inicial abaixo
 
           modelo_carne_define_tags(doc)
 
@@ -160,7 +160,7 @@ module Brcobranca
 
         # define as linhas do documento conforme margem inferior
         def calc_linhas(margin_bottom)
-          linhas = [8.2, 7.5, 6.92, 6.34, 5.74, 5.1, 4.7, 4.3, 3.9, 3.5, 3.1, 2.32, 1.92, 1.69, 0.1]
+          linhas = [8.7, 8.0, 7.42, 6.84, 6.24, 5.6, 5.2, 4.8, 4.4, 4.0, 3.6, 2.82, 2.42, 2.19, 0.6]
 
           linhas.each_with_index do |v, i|
             linhas[i] = v + margin_bottom
