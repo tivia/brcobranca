@@ -6,11 +6,13 @@ module Brcobranca
     class Base # Classe base para retornos bancários
       attr_accessor :agencia_com_dv
       attr_accessor :agencia_sem_dv
+      attr_accessor :byte_idt
       attr_accessor :cedente_com_dv
       attr_accessor :convenio
       attr_accessor :nosso_numero
       attr_accessor :nosso_numero_com_dv
       attr_accessor :cod_de_ocorrencia
+      attr_accessor :ocorrencia
       attr_accessor :tipo_cobranca
       attr_accessor :tipo_cobranca_anterior
       attr_accessor :natureza_recebimento
@@ -34,6 +36,8 @@ module Brcobranca
       attr_accessor :valor_abatimento
       attr_accessor :desconto_concedito
       attr_accessor :valor_recebido
+      attr_accessor :valor_pago
+      attr_accessor :valor_multa
       attr_accessor :juros_mora
       attr_accessor :outros_recebimento
       attr_accessor :abatimento_nao_aproveitado

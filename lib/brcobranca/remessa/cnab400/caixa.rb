@@ -29,6 +29,10 @@ module Brcobranca
         def carteira=(valor)
           @carteira = valor.to_s.rjust(2, '0') if valor
         end
+        
+        def sequencial_remessa=(valor)
+          @sequencial_remessa = valor.to_s.rjust(5, '0')
+        end
 
         def cod_banco
           '104'
@@ -58,7 +62,7 @@ module Brcobranca
         # @return [String]
         #
         def complemento
-          ''.rjust(294, ' ')
+          "#{''.rjust(289, ' ')}#{sequencial_remessa}"
         end
         
         # Detalhe do arquivo
@@ -78,7 +82,7 @@ module Brcobranca
             detalhe << documento_cedente.to_s.rjust(14, '0')                  # cpf/cnpj da empresa                   9[14]
             detalhe << agencia                                                # agencia                               9[04]
             detalhe << codigo_beneficiario                                    # codigo do beneficiario                9[06]
-            detalhe << '1'                                                    # Identificação de emissão do boleto    9[01]
+            detalhe << '2'                                                    # Identificação de emissão do boleto    9[01]
             detalhe << '0'                                                    # Identificação da Entrega/Distrib.     9[01]
             detalhe << '00'                                                   # Comissão de Permanência               9[02]
             detalhe << pagamento.numero_documento.to_s.rjust(25, '0')         # Identificação do Título na Empresa    X[25]
@@ -93,10 +97,10 @@ module Brcobranca
             detalhe << pagamento.formata_valor                                # valor do documento                    9[13]
             detalhe << cod_banco                                              # banco de compensacao                  9[03]
             detalhe << ''.rjust(5, '0')                                       # agencia cobradora                     9[05]
-            detalhe << '99'                                                   # especie  do titulo                    X[02]
+            detalhe << '01'                                                   # especie  do titulo                    X[02]
             detalhe << aceite                                                 # aceite (A/N)                          X[01]
             detalhe << pagamento.data_emissao.strftime('%d%m%y')              # data de emissao                       9[06]
-            detalhe << ''.rjust(2, '0')                                       # 1a instrucao - deixar zero            X[02]
+            detalhe << '02'                                                   # 1a instrucao - deixar zero            X[02]
             detalhe << ''.rjust(2, '0')                                       # 2a instrucao - deixar zero            X[02]
             detalhe << pagamento.formata_valor_mora                           # valor mora ao dia                     9[13]
             detalhe << pagamento.formata_data_desconto                        # data limite para desconto             9[06]
@@ -111,14 +115,18 @@ module Brcobranca
             detalhe << pagamento.cep_sacado                                   # cep do pagador                        9[08]
             detalhe << pagamento.cidade_sacado.format_size(15)                # cidade do pagador                     X[15]
             detalhe << pagamento.uf_sacado                                    # uf do pagador                         X[02]  
-            detalhe << ''.rjust(6, '0')                                       # data para pagamento de multa          9[06] 
-            detalhe << ''.rjust(10, '0')                                      # valor da multa                        9[10]
+            detalhe << pagamento.formata_data_multa                           # data para pagamento de multa          9[06] 
+            detalhe << pagamento.formata_valor_multa_em_reais                 # valor da multa                        9[10]
             detalhe << pagamento.nome_avalista.format_size(22)                # nome do sacador/avalista              X[22]
             detalhe << ''.rjust(2, '0')                                       # 3a instrucao - deixar zero            X[02]
-            detalhe << ''.rjust(2, '0')                                       # Núm. dias p/ início do prot./ dev     9[02]
+            detalhe << '60'                                                   # Núm. dias p/ início do prot./ dev     9[02]
             detalhe << '1'                                                    # codigo da moeda                       9[01]    
             detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
             detalhe
+        end
+        
+        def monta_detalhe_multa(pagamento, sequencial)
+          nil
         end
       end
     end

@@ -181,6 +181,11 @@ module Brcobranca
       def formata_valor_multa(tamanho = 6)
         format_value(percentual_multa, tamanho)
       end
+      
+      def formata_valor_multa_em_reais(tamanho = 10)
+        valor_multa = (valor * (percentual_multa.to_f / 100)) if percentual_multa > 0
+        format_value((valor_multa || 0.0), tamanho)
+      end
 
       # Formata o campo valor do desconto
       #

@@ -23,6 +23,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Caixa do
       digito_conta: '1',
       empresa_mae: 'SOCIEDADE BRASILEIRA DE ZOOLOGIA LTDA',
       documento_cedente: '12345678910',
+      sequencial_remessa: '00001',
       pagamentos: [pagamento] }
   end
   let(:caixa) { subject.class.new(params) }
@@ -114,7 +115,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Caixa do
         expect(detalhe[120..125]).to eq Date.current.strftime('%d%m%y') # data de vencimento
         expect(detalhe[126..138]).to eq '0000000019990' # valor do titulo
         expect(detalhe[142..146]).to eq '00000' # agência cobradora
-        expect(detalhe[156..157]).to eq '00' # instrução 1
+        expect(detalhe[156..157]).to eq '02' # instrução 1
         expect(detalhe[158..159]).to eq '00' # instrução 2
         expect(detalhe[220..233]).to eq '00012345678901' # documento do pagador
         expect(detalhe[234..273]).to eq 'PABLO DIEGO JOSE FRANCISCO DE PAULA JUAN' # nome do pagador

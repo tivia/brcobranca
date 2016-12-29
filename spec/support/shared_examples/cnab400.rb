@@ -68,6 +68,7 @@ shared_examples_for 'cnab400' do
         codigo_beneficiario: '270272',
         empresa_mae: 'SOCIEDADE BRASILEIRA DE ZOOLOGIA LTDA',
         documento_cedente: '12345678910',
+        sequencial_remessa: '1',
         pagamentos: [pagamento] }
     elsif subject.class == Brcobranca::Remessa::Cnab400::BancoBrasil
       { carteira: '12',
