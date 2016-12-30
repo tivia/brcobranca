@@ -96,7 +96,7 @@ module Brcobranca
       def initialize(campos = {})
         padrao = {
           moeda: '9', data_documento: Date.current, data_vencimento: Date.current, quantidade: 1,
-          especie_documento: 'DM', especie: 'R$', aceite: 'S', valor: 0.0,
+          especie_documento: 'DM', especie: 'R$', aceite: 'N', valor: 0.0,
           local_pagamento: 'QUALQUER BANCO ATÉ O VENCIMENTO'
         }
 
