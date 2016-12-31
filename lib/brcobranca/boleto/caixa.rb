@@ -31,6 +31,10 @@ module Brcobranca
 
         super(campos)
       end
+      
+      def cod_carteira
+        carteira == "RG" ? '1' : '2'
+      end
 
       # Código do banco emissor
       # @return [String]
@@ -67,7 +71,7 @@ module Brcobranca
       #  1 à 2: carteira
       #  3 à 17: campo_livre
       def nosso_numero
-        "#{carteira}#{emissao}#{numero_documento}"
+        "#{cod_carteira}#{emissao}#{numero_documento}"
       end
 
       # Dígito verificador do Nosso Número
