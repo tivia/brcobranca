@@ -7,7 +7,7 @@ RSpec.describe Brcobranca::Boleto::Base do
     @valid_attributes = {
       especie_documento: 'DM',
       moeda: '9',
-      aceite: 'S',
+      aceite: 'N',
       quantidade: 1,
       valor: 0.0,
       local_pagamento: 'QUALQUER BANCO ATÉ O VENCIMENTO',
@@ -29,7 +29,7 @@ RSpec.describe Brcobranca::Boleto::Base do
     expect(boleto_novo.moeda).to eql('9')
     expect(boleto_novo.data_documento).to eql(Date.current)
     expect(boleto_novo.data_vencimento).to eql(Date.current)
-    expect(boleto_novo.aceite).to eql('S')
+    expect(boleto_novo.aceite).to eql('N')
     expect(boleto_novo.quantidade).to be(1)
     expect(boleto_novo.valor).to be(0.0)
     expect(boleto_novo.valor_documento).to be(0.0)
@@ -44,7 +44,7 @@ RSpec.describe Brcobranca::Boleto::Base do
     expect(boleto_novo.moeda).to eql('9')
     expect(boleto_novo.data_documento).to eql(Date.current)
     expect(boleto_novo.data_vencimento).to eql(Date.current)
-    expect(boleto_novo.aceite).to eql('S')
+    expect(boleto_novo.aceite).to eql('N')
     expect(boleto_novo.quantidade).to be(1)
     expect(boleto_novo.valor).to be(0.0)
     expect(boleto_novo.valor_documento).to be(0.00)

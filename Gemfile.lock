@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    brcobranca (7.1.2)
+    brcobranca (7.1.6)
       activemodel (>= 3)
       activesupport (>= 3)
       parseline (~> 1.0.3)

@@ -27,13 +27,13 @@ RSpec.describe Brcobranca::Boleto::Caixa do #:nodoc:[all]
     expect(boleto_novo.moeda).to eql('9')
     expect(boleto_novo.data_documento).to eql(Date.current)
     expect(boleto_novo.data_vencimento).to eql(Date.current)
-    expect(boleto_novo.aceite).to eql('S')
+    expect(boleto_novo.aceite).to eql('N')
     expect(boleto_novo.quantidade).to be(1)
     expect(boleto_novo.valor).to be(0.0)
     expect(boleto_novo.valor_documento).to be(0.0)
     expect(boleto_novo.local_pagamento).to eql('PREFERENCIALMENTE NAS CASAS LOTÉRICAS ATÉ O VALOR LIMITE')
     expect(boleto_novo.codigo_servico).to be_falsey
-    expect(boleto_novo.carteira).to eql('2')
+    expect(boleto_novo.carteira).to eql('RG')
     expect(boleto_novo.emissao).to eql('4')
   end
 
@@ -55,7 +55,7 @@ RSpec.describe Brcobranca::Boleto::Caixa do #:nodoc:[all]
     boleto_novo = described_class.new @valid_attributes
     expect { boleto_novo.codigo_barras }.not_to raise_error
     expect(boleto_novo.codigo_barras_segunda_parte).not_to be_blank
-    expect(boleto_novo.codigo_barras_segunda_parte).to eql('2452740000200040000000010')
+    expect(boleto_novo.codigo_barras_segunda_parte).to eql('2452740000100040000000017')
   end
 
   it 'Não permitir gerar boleto com atributos inválidos' do
@@ -74,11 +74,11 @@ RSpec.describe Brcobranca::Boleto::Caixa do #:nodoc:[all]
     expect(boleto_novo).to be_valid
   end
 
-  it 'Tamanho da carteira deve ser de 1 dígitos' do
+  it 'Tamanho da carteira deve ser de 2 dígitos' do
     boleto_novo = described_class.new @valid_attributes.merge(carteira: '145')
     expect(boleto_novo).not_to be_valid
 
-    boleto_novo = described_class.new @valid_attributes.merge(carteira: '24')
+    boleto_novo = described_class.new @valid_attributes.merge(carteira: '1')
     expect(boleto_novo).not_to be_valid
   end
 
@@ -103,7 +103,7 @@ RSpec.describe Brcobranca::Boleto::Caixa do #:nodoc:[all]
 
   it 'Montar nosso_numero_boleto' do
     boleto_novo = described_class.new @valid_attributes
-    expect(boleto_novo.nosso_numero_boleto).to eq('24000000000000001-2')
+    expect(boleto_novo.nosso_numero_boleto).to eq('14/000000000000001-4')
   end
 
   it 'Montar agencia_conta_boleto' do

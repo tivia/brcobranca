@@ -64,7 +64,9 @@ module Brcobranca
       # Nosso número, 17 dígitos
       # @return [String]
       def nosso_numero_boleto
-        "#{nosso_numero}-#{nosso_numero_dv}"
+        nosso_numero_carteira = nosso_numero[0..1]
+        nosso_numero_campo_livre = nosso_numero[2..16]
+        "#{nosso_numero_carteira}/#{nosso_numero_campo_livre}-#{nosso_numero_dv}"
       end
 
       # Nosso número, 17 dígitos
