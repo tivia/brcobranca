@@ -70,13 +70,13 @@ module Brcobranca
         def monta_detalhe(pagamento, sequencial)
           raise Brcobranca::RemessaInvalida, pagamento if pagamento.invalid?
 
-          detalhe = '1'                                                     # identificacao transacao               9[01]
+          detalhe = '1'                                                      # identificacao transacao               9[01]
           detalhe << (carteira == "1" ? 'A' : 'C')                          # Tipo de cobrança     A - Com Registro X[01]                 
           detalhe << 'A'                                                    # Tipo de carteira  A - Simples         X[01]
           detalhe << 'A'                                                    # Tipo de impressao A - Normal          X[01]
           detalhe << ''.rjust(12, ' ')                                      # Espaço em branco                      X[12]  
           detalhe << 'A'                                                    # Tipo de Moeda    A - Real             X[01]
-          detalhe << 'B'                                                    # Tipo de Desconto B - Percentural      X[01]
+          detalhe << 'A'                                                    # Tipo de Desconto B - Percentural      X[01]
           detalhe << 'B'                                                    # Tipo de Juros    B - Percentural      X[01]
           detalhe << ''.rjust(28, ' ')                                      # Espaço em branco                      X[28]
           detalhe << nosso_numero(pagamento)                                # Nosso Numero                          9[09]
@@ -138,7 +138,7 @@ module Brcobranca
         end
         
         def numero_documento_com_byte_idt(pagamento)
-          "#{pagamento.data_emissao.strftime('%y')}#{byte_idt}#{pagamento.nosso_numero}"
+          "#{pagamento.data_emissao.strftime('%y')}#{byte_idt}#{pagamento.nosso_numero.to_s.rjust(5,'0')}"
         end
         def nosso_numero_dv(pagamento)
           "#{agencia_posto_conta}#{numero_documento_com_byte_idt(pagamento)}".modulo11(mapeamento: mapeamento_para_modulo_11)
