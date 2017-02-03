@@ -17,14 +17,14 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicredi do
                                        uf_sacado: 'SP')
   end
   let(:params) do
-    { agencia: '0306',
-      conta_corrente: '78817',
-      convenio: '78817',
-      carteira: 'A',
-      empresa_mae: 'LIGNET',
-      documento_cedente: '06153965000109',
-      posto: '05',
-      byte_idt: '4',
+    { agencia: '0710',
+      conta_corrente: '56549',
+      convenio: '00470',
+      carteira: '1',
+      empresa_mae: 'MAURO CEZAR CORREA',
+      documento_cedente: '90321022904',
+      posto: '47',
+      byte_idt: '1',
       pagamentos: [pagamento] }
   end
   let(:sicredi) { subject.class.new(params) }
@@ -38,7 +38,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicredi do
       end
 
       it 'deve ser invalido se a agencia tiver mais de 4 digitos' do
-        sicredi.agencia = '12345'
+        sicredi.agencia = '00710'
         expect(sicredi.invalid?).to be true
         expect(sicredi.errors.full_messages).to include('Agencia deve ter 4 dígitos.')
       end
@@ -109,8 +109,8 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicredi do
 
     it 'identificacao da empresa deve ter as informacoes nas posicoes corretas' do
       id_empresa = sicredi.info_conta
-      expect(id_empresa[0..4]).to eq '78817' # codigo do beneficiario
-      expect(id_empresa[5..18]).to eq '06153965000109' # digito_agencia
+      expect(id_empresa[0..4]).to eq '00470' # codigo do beneficiario
+      expect(id_empresa[5..18]).to eq '00090321022904' 
     end
   end
 
@@ -126,11 +126,21 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicredi do
         expect(header[76..78]).to eq '748' # codigo do banco
       end
     end
-
+    
+     context 'header' do
+      it 'informacoes devem estar posicionadas corretamente no header' do
+        header = sicredi.monta_header
+        
+        expect(header[26..30]).to eq '00470' 
+        expect(header[394..399]).to eq '000001'
+      end
+    end
+    
     context 'detalhe' do
       it 'informacoes devem estar posicionadas corretamente no detalhe' do
         detalhe = sicredi.monta_detalhe pagamento, 1
-        expect(detalhe[47..55]).to eq '174093944' # nosso numero
+        expect(detalhe[47..55]).to eq '171093943' # nosso numero
+        expect(detalhe[1..1]).to eq 'A' # carteira
         expect(detalhe[120..125]).to eq Date.current.strftime('%d%m%y') # data de vencimento
         expect(detalhe[126..138]).to eq '0000000019990' # valor do documento
         expect(detalhe[220..233]).to eq '00012345678901'  # documento do pagador
@@ -138,6 +148,8 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicredi do
         expect(detalhe[274..313]).to eq 'RUA RIO GRANDE DO SUL Sao paulo Minas ca' # endereco do pagador
       end
     end
+    
+    
 
     # context 'arquivo' do
     #   before { Timecop.freeze(Time.local(2015, 7, 14, 16, 15, 15)) }

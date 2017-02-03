@@ -27,6 +27,10 @@ module Brcobranca
           '2.00'
         end
         
+        def data_geracao
+          Date.current.strftime('%Y%m%d')
+        end
+        
         def convenio=(valor)
           @convenio = valor.to_s.rjust(5, '0') if valor
         end
@@ -40,7 +44,7 @@ module Brcobranca
         end
         
         def info_conta
-          "#{conta_corrente}#{documento_cedente.to_s.rjust(14,'0')}#{''.rjust(31, ' ')}"
+          "#{convenio.to_s.rjust(5,'0')}#{documento_cedente.to_s.rjust(14,'0')}#{''.rjust(31, ' ')}"
         end
         
         def data_geracao
@@ -67,7 +71,7 @@ module Brcobranca
           raise Brcobranca::RemessaInvalida, pagamento if pagamento.invalid?
 
           detalhe = '1'                                                     # identificacao transacao               9[01]
-          detalhe << carteira                                                 # Tipo de cobrançafter A - Com Registro X[01]                 
+          detalhe << (carteira == "1" ? 'A' : 'C')                          # Tipo de cobrança     A - Com Registro X[01]                 
           detalhe << 'A'                                                    # Tipo de carteira  A - Simples         X[01]
           detalhe << 'A'                                                    # Tipo de impressao A - Normal          X[01]
           detalhe << ''.rjust(12, ' ')                                      # Espaço em branco                      X[12]  
@@ -86,7 +90,7 @@ module Brcobranca
           detalhe << ''.rjust(2, ' ')                                       # Numero do total sw parcelas no carne  9[02]
           detalhe << ''.rjust(4, ' ')                                       # Espaço em branco                      X[04]
           detalhe << ''.rjust(10, '0')                                      # Valor de desc. por dia de antecipação 9[10]
-          detalhe << ''.rjust(4, '0')                                       # % multa por pagamento em atraso       9[04]
+          detalhe << pagamento.formata_valor_multa(4)                       # % multa por pagamento em atraso       9[04]
           detalhe << ''.rjust(12, ' ')                                      # Espaço em branco                      X[12]
           detalhe << '01'                                                   # Instrução                             9[02]
           detalhe << pagamento.numero_documento.to_s.rjust(10, '0')         # Seu numero                            9[10]
@@ -98,10 +102,10 @@ module Brcobranca
           detalhe << pagamento.data_emissao.strftime('%d%m%y')              # data de emissao                       9[06]
           detalhe << ''.rjust(2, '0')                                       # Instrução de protesto automático      9[02]
           detalhe << ''.rjust(2, '0')                                       # Número de dias p/protesto automático  9[02]
-          detalhe << ''.rjust(13, '0')                                      # Valor/% de juros por dia de atras     9[13]
+          detalhe << pagamento.formata_valor_mora                           # Valor/% de juros por dia de atras     9[13]
           detalhe << ''.rjust(6, '0')                                       # Data limite p/concessão de desconto   9[06]
           detalhe << ''.rjust(13, '0')                                      # Valor/% do desconto                   9[13]
-          detalhe << ''.rjust(13, ' ')                                      # Espaço em branco                      X[13]
+          detalhe << ''.rjust(13, '0')                                      # Espaço em branco                      X[13]
           detalhe << ''.rjust(13, '0')                                      # Valor do abatimento                   X[13]
           detalhe << Brcobranca::Util::Empresa.new(pagamento.documento_sacado, false).tipo  # tipo de identificacao da empresa      9[01]
           detalhe << ''.rjust(1, '0')                                       # Zero                                  X[01]
