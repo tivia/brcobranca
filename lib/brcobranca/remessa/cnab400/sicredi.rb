@@ -97,7 +97,7 @@ module Brcobranca
           detalhe << pagamento.data_vencimento.strftime('%d%m%y')           # data do vencimento                    9[06]
           detalhe << pagamento.formata_valor                                # valor do documento                    9[13]
           detalhe << ''.rjust(9, ' ')                                       # Espaço em branco                      X[12]
-          detalhe << 'A'                                                    # Especie de Documento                  X[01]  A -Duplicata Mercantil por Indicação
+          detalhe << 'J'                                                    # Especie de Documento                  X[01]  A -Duplicata Mercantil por Indicação
           detalhe << 'N'                                                    # aceite N - Não                        X[01]
           detalhe << pagamento.data_emissao.strftime('%d%m%y')              # data de emissao                       9[06]
           detalhe << ''.rjust(2, '0')                                       # Instrução de protesto automático      9[02]
