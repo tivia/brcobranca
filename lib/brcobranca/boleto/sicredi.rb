@@ -28,7 +28,7 @@ module Brcobranca
       # Nova instancia do Bradesco
       # @param (see Brcobranca::Boleto::Base#initialize)
       def initialize(campos = {})
-        campos = { carteira: '3', especie_documento: 'A' }.merge!(campos)
+        campos = { carteira: '3', especie_documento: 'DSI' }.merge!(campos)
         super(campos)
       end
 
