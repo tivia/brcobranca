@@ -30,25 +30,20 @@ module Brcobranca
         # convenio do cedente
         attr_accessor :convenio
 
-        validates_presence_of :agencia, :conta_corrente, :carteira, :convenio, :modalidade_carteira, :tipo_formulario, :digito_conta, :sequencial_remessa, :documento_cedente, message: 'não pode estar em branco.'
+        validates_presence_of :agencia, :conta_corrente, :carteira, :convenio, :digito_conta, :sequencial_remessa, :documento_cedente, message: 'não pode estar em branco.'
         # Remessa 400 - 8 digitos
         # Remessa 240 - 12 digitos
         validates_length_of :conta_corrente, is: 8, message: 'deve ter 8 dígitos.'
         validates_length_of :agencia, is: 4, message: 'deve ter 4 dígitos.'
-        validates_length_of :modalidade_carteira, is: 1, message: 'deve ter 1 dígitos.'
         validates_length_of :digito_conta, maximum: 1, message: 'deve ter 1 dígito.'
         validates_length_of :sequencial_remessa, maximum: 7, message: 'deve ter 7 dígitos.'
         validates_length_of :carteira, is: 2, message: 'deve ter 2 dígitos.'
         validates_length_of :documento_cedente, minimum: 11, maximum: 14, message: 'deve ter entre 11 e 14 dígitos.'
-
-        # Com DV
-        validates_length_of :convenio, is: 9, message: 'deve ter 9 dígitos.'
+        validates_length_of :convenio, maximum: 7, message: 'não deve ser maior que 7 dígitos.' # Com DV
 
         def initialize(campos = {})
           campos = {
             distribuicao_boleto: '2',
-            tipo_formulario: '4',
-            modalidade_carteira: '2',
             sequencial_remessa: '0000001',
             carteira: '01'
           }.merge!(campos)
@@ -74,7 +69,7 @@ module Brcobranca
           # 039   008 9(008) Código do Cliente/Beneficiário: vide planilha "Capa" deste arquivo
           # 040   001 A(001) Dígito Verificador do Código: vide planilha "Capa" deste arquivo
           # 046   006 9(006) Número do convênio líder: Brancos
-          "#{agencia}#{digito_agencia}#{convenio}      "
+          "#{agencia}#{digito_agencia}#{convenio.rjust(9, '0')}#{''.rjust(6, ' ')}"
         end
 
         def digito_agencia
@@ -139,10 +134,10 @@ module Brcobranca
           detalhe << digito_conta                                           # Digito da conta corrente              9[1]
           detalhe << '000000'                                               # Convênio de Cobrança do Beneficiário: "000000"      9[6]
           detalhe << ''.rjust(25, ' ')                                      # Número de Controle do Participante: Brancos      X[25]
-          detalhe << pagamento.nosso_numero.to_s.rjust(12, '0')             # nosso numero com DV                   9[12]
+          detalhe << nosso_numero(pagamento)              # nosso numero com DV                   9[12]
           detalhe << pagamento.parcela.to_s.rjust(2, '0')                   # Número da Parcela: "01" se parcela única   9[02]
           detalhe << '00'                                                   # Grupo de Valor: "00"                  9[02]
-          detalhe << '   '                                                  # Complemento do Registro: Brancos      X[03]
+          detalhe << ''.rjust(3, ' ')                                                   # Complemento do Registro: Brancos      X[03]
 
           # "Indicativo de Mensagem ou Sacador/Avalista:
           # Brancos: Poderá ser informada nas posições 352 a 391 (SEQ 50) qualquer mensagem para ser impressa no boleto;
@@ -157,13 +152,13 @@ module Brcobranca
           # Para Carteira 3 preencher com o  número do contrato sem DV."
           detalhe << '00000'                                                # Número do Contrato Garantia           9[05]
           detalhe << '0'                                                    # DV do contrato                        9[01]
-          detalhe << '000000'                                               # Numero do borderô: preencher em caso de carteira 3           9[06]
+          detalhe << '      '                                               # Numero do borderô: preencher em caso de carteira 3           9[06]
           detalhe << '    '                                                 # Complemento do Registro: Brancos      X[04]
 
           # "Tipo de Emissão:
           # 1 - Cooperativa
           # 2 - Cliente"
-          detalhe << modalidade_carteira # Tipo de Emissão                       9[01]
+          detalhe << "2" # Tipo de Emissão                       9[01]
 
           # "Carteira/Modalidade:
           # 01 = Simples Com Registro
@@ -185,7 +180,7 @@ module Brcobranca
           # 31 = Alteração de Outros Dados
           # 34 = Baixa - Pagamento Direto ao Beneficiário
 
-          detalhe << pagamento.identificacao_ocorrencia                     # identificacao ocorrencia              9[02]
+          detalhe << "01"                                      # identificacao ocorrencia              9[02]
           detalhe << pagamento.numero_documento.to_s.rjust(10, '0')         # numero do documento                   X[10]
           detalhe << pagamento.data_vencimento.strftime('%d%m%y')           # data do vencimento                    9[06]
           detalhe << pagamento.formata_valor                                # valor do documento                    9[13]
@@ -211,7 +206,7 @@ module Brcobranca
           # 21 = Mensalidade Escolar
           # 22 = Parcela de Consórcio
           # 99 = Outros"
-          detalhe << pagamento.especie_titulo                               # Espécie de documento                  9[02]
+          detalhe << "12"                              # Espécie de documento                  9[02]
           detalhe << '0'                                                    # aceite (A=1/N=0)                      X[01]
           detalhe << pagamento.data_emissao.strftime('%d%m%y')              # data de emissao                       9[06]
 
@@ -232,11 +227,11 @@ module Brcobranca
           # 22 = CONCEDER DESCONTO SO ATE DATA ESTIPULADA
           # 42 = DEVOLVER APOS 15 DIAS VENCIDO
           # 43 = DEVOLVER APOS 30 DIAS VENCIDO"
-          detalhe << '00'                                                   # Instrução para o título               9[02]
+          detalhe << '01'                                                   # Instrução para o título               9[02]
           detalhe << '00'                                                   # Número de dias válidos para instrução 9[02]
-          detalhe << pagamento.formata_valor_mora(6)                        # valor mora ao dia                     9[06]
+          detalhe << pagamento.formata_valor_mora(6)                        # valor mora ao mês                     9[06]
           detalhe << pagamento.formata_valor_multa(6)                       # taxa de multa                         9[06]
-          detalhe << distribuicao_boleto                                    # indentificacao entrega                9[01]
+          detalhe << "2"                                                  # indentificacao entrega                9[01]
           detalhe << pagamento.formata_data_desconto                        # data limite para desconto             9[06]
           detalhe << pagamento.formata_valor_desconto                       # valor do desconto                     9[13]
 
@@ -244,7 +239,7 @@ module Brcobranca
           # 194-205 – Valor IOF / Quantidade Monetária: ""000000000000""
           # Se o código da moeda for REAL, o valor restante representa o IOF.
           # Se o código da moeda for diferente de REAL, o valor restante será a quantidade monetária.
-          detalhe << pagamento.formata_valor_iof                            # valor do iof                          9[13]
+          detalhe << "9#{pagamento.formata_valor_iof(12)}"                            # valor do iof                          9[13]
           detalhe << pagamento.formata_valor_abatimento                     # valor do abatimento                   9[13]
           detalhe << pagamento.identificacao_sacado.rjust(2, '0')           # identificacao do pagador              9[02]
           detalhe << pagamento.documento_sacado.to_s.rjust(14, '0')         # documento do pagador                  9[14]
@@ -301,6 +296,20 @@ module Brcobranca
           # 8 395 400 006 9(06) Seqüencial do Registro: Incrementado em 1 a cada registro
 
           "9#{''.rjust(393, '0')}#{sequencial.to_s.rjust(6, '0')}"
+        end
+        
+        private 
+        
+        def nosso_numero(pagamento)
+          "#{pagamento.nosso_numero.to_s.rjust(11, '0')}#{nosso_numero_dv(pagamento)}"  
+        end
+        
+        def nosso_numero_dv(pagamento)
+          "#{agencia}#{convenio.to_s.rjust(10, '0')}#{pagamento.nosso_numero.to_s.rjust(7,'0')}".modulo11(
+            reverse: false,
+            multiplicador: [3, 1, 9, 7],
+            mapeamento: { 10 => 0, 11 => 0 }
+          ) { |t| 11 - (t % 11) }
         end
       end
     end

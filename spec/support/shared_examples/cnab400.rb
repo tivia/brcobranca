@@ -49,7 +49,7 @@ shared_examples_for 'cnab400' do
         digito_conta: '1',
         empresa_mae: 'SOCIEDADE BRASILEIRA DE ZOOLOGIA LTDA',
         documento_cedente: '12345678910',
-        convenio: '123456789',
+        convenio: '95634',
         pagamentos: [pagamento] }
      elsif subject.class == Brcobranca::Remessa::Cnab400::Sicredi
       { 
