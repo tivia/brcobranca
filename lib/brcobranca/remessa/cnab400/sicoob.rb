@@ -295,6 +295,10 @@ module Brcobranca
           "9#{''.rjust(393, '0')}#{sequencial.to_s.rjust(6, '0')}"
         end
         
+        def monta_detalhe_multa(pagamento, sequencial)
+          nil
+        end
+        
         private 
         
         def nosso_numero(pagamento)
