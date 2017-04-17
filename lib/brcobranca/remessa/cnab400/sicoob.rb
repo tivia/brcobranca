@@ -26,18 +26,15 @@ module Brcobranca
         #            "3" -auto-envelopável
         #            "4" -A4 sem envelopamento
         #            "6" -A4 sem envelopamento 3 vias
-
-        # convenio do cedente
-        attr_accessor :convenio
-
+      
         validates_presence_of :agencia, :conta_corrente, :carteira, :convenio, :digito_conta, :sequencial_remessa, :documento_cedente, message: 'não pode estar em branco.'
         # Remessa 400 - 8 digitos
         # Remessa 240 - 12 digitos
-        validates_length_of :conta_corrente, is: 8, message: 'deve ter 8 dígitos.'
+        validates_length_of :conta_corrente, maximum: 8, message: 'deve ter 8 dígitos no máximo.'
         validates_length_of :agencia, is: 4, message: 'deve ter 4 dígitos.'
         validates_length_of :digito_conta, maximum: 1, message: 'deve ter 1 dígito.'
         validates_length_of :sequencial_remessa, maximum: 7, message: 'deve ter 7 dígitos.'
-        validates_length_of :carteira, is: 2, message: 'deve ter 2 dígitos.'
+        validates_length_of :carteira, maximum: 2, message: 'deve ter 2 dígitos no máximo.'
         validates_length_of :documento_cedente, minimum: 11, maximum: 14, message: 'deve ter entre 11 e 14 dígitos.'
         validates_length_of :convenio, maximum: 7, message: 'não deve ser maior que 7 dígitos.' # Com DV
 
@@ -75,7 +72,7 @@ module Brcobranca
         def digito_agencia
           # utilizando a agencia com 4 digitos
           # para calcular o digito
-          agencia.modulo11(mapeamento: { 10 => 'X' }).to_s
+          agencia.modulo11.to_s
         end
 
         # Complemento do header
@@ -130,7 +127,7 @@ module Brcobranca
           detalhe << documento_cedente.to_s.rjust(14, '0')                  # cpf/cnpj da empresa                   9[14]
           detalhe << agencia                                                # Prefixo da Cooperativa                9[4]
           detalhe << digito_agencia                                         # Digito da Cooperativa                 9[1]
-          detalhe << conta_corrente                                         # Conta corrente                        9[8]
+          detalhe << conta_corrente.to_s.rjust(8,'0')                                         # Conta corrente                        9[8]
           detalhe << digito_conta                                           # Digito da conta corrente              9[1]
           detalhe << '000000'                                               # Convênio de Cobrança do Beneficiário: "000000"      9[6]
           detalhe << ''.rjust(25, ' ')                                      # Número de Controle do Participante: Brancos      X[25]
@@ -164,7 +161,7 @@ module Brcobranca
           # 01 = Simples Com Registro
           # 02 = Simples Sem Registro
           # 03 = Garantida Caucionada "
-          detalhe << carteira # codigo da carteira                    9[02]
+          detalhe << carteira.to_s.rjust(2,'0') # codigo da carteira                    9[02]
 
           # "Comando/Movimento:
           # 01 = Registro de Títulos

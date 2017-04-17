@@ -67,7 +67,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicoob do
       it 'deve ser invalido se a conta corrente tiver mais de 8 digitos' do
         sicoob.conta_corrente = '123456789'
         expect(sicoob.invalid?).to be true
-        expect(sicoob.errors.full_messages).to include('Conta corrente deve ter 8 dígitos.')
+        expect(sicoob.errors.full_messages).to include('Conta corrente deve ter 8 dígitos no máximo.')
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicoob do
       it 'deve ser invalido se a carteira tiver mais de 1 digito' do
         sicoob.carteira = '123'
         expect(sicoob.invalid?).to be true
-        expect(sicoob.errors.full_messages).to include('Carteira deve ter 2 dígitos.')
+        expect(sicoob.errors.full_messages).to include('Carteira deve ter 2 dígitos no máximo.')
       end
     end
 
@@ -92,7 +92,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicoob do
         expect(objeto.errors.full_messages).to include('Sequencial remessa não pode estar em branco.')
       end
 
-      it 'deve ser invalido se sequencial de remessa tiver mais de 8 digitos' do
+      it 'deve ser invalido se sequencial de remessa tiver mais de 7 digitos' do
         sicoob.sequencial_remessa = '12345678'
         expect(sicoob.invalid?).to be true
         expect(sicoob.errors.full_messages).to include('Sequencial remessa deve ter 7 dígitos.')
