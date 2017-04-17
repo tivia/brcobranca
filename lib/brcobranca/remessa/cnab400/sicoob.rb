@@ -292,7 +292,7 @@ module Brcobranca
           #   Quando o SEQ 34 e SEQ 35 forem preenchidos com valores diferentes destes, preencher com Brancos"
           # 8 395 400 006 9(06) Seqüencial do Registro: Incrementado em 1 a cada registro
 
-          "9#{''.rjust(393, '0')}#{sequencial.to_s.rjust(6, '0')}"
+          "9#{''.rjust(393, ' ')}#{sequencial.to_s.rjust(6, '0')}"
         end
         
         def monta_detalhe_multa(pagamento, sequencial)
