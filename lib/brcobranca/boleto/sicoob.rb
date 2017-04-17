@@ -11,7 +11,7 @@ module Brcobranca
       validates_length_of :quantidade, maximum: 3, message: 'deve ser menor ou igual a 3 dígitos.'
 
       def initialize(campos = {})
-        campos = { carteira: '1', variacao: '01', quantidade: '001' }.merge!(campos)
+        campos = { carteira: '1', variacao: '01', quantidade: '001', especie_documento: 'DS' }.merge!(campos)
         super(campos)
       end
 
@@ -61,7 +61,7 @@ module Brcobranca
       #
       # @return [String] 8 caracteres numéricos.
       def nosso_numero_boleto
-        "#{numero_documento}#{nosso_numero_dv}"
+        "#{numero_documento}-#{nosso_numero_dv}"
       end
 
       # 3.13. Nosso número: Código de controle que permite ao Sicoob e à empresa identificar os dados da cobrança que deu origem ao boleto.
@@ -112,7 +112,7 @@ module Brcobranca
       #    34 a 41      08                 Nosso número do boleto
       #    41 a 44      03                 Número da parcela a que o boleto se refere - "001" se parcela única
       def codigo_barras_segunda_parte
-        "#{carteira}#{agencia}#{variacao}#{convenio}#{nosso_numero_boleto}#{quantidade}"
+        "#{carteira}#{agencia}#{variacao}#{convenio}#{numero_documento}#{nosso_numero_dv}#{quantidade}"
       end
     end
   end
