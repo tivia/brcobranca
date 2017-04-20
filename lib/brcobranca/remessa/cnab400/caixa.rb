@@ -122,7 +122,7 @@ module Brcobranca
             detalhe << '60'                                                   # Núm. dias p/ início do prot./ dev     9[02]
             detalhe << '1'                                                    # codigo da moeda                       9[01]    
             detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
-            detalhe
+            detalhe.to_ascii
         end
         
         def monta_detalhe_multa(pagamento, sequencial)

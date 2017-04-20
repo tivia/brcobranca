@@ -107,7 +107,7 @@ module Brcobranca
           # 394   287 A(287) Complemento do Registro: Brancos
           # 400   006 9(006) Seqüencial do Registro:”000001”
 
-          "01REMESSA01COBRANÇA       #{info_conta}#{empresa_mae.format_size(30)}#{cod_banco}#{nome_banco}#{data_geracao}#{sequencial_remessa}#{complemento}000001"
+          "01REMESSA01COBRANÇA       #{info_conta}#{empresa_mae.format_size(30).to_ascii}#{cod_banco}#{nome_banco}#{data_geracao}#{sequencial_remessa}#{complemento}000001"
         end
 
         # Detalhe do arquivo
@@ -261,7 +261,7 @@ module Brcobranca
           detalhe << '00'                                                   # Número de Dias Para Protesto          x[02]
           detalhe << ' '                                                    # Brancos                               X[1]
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
-          detalhe
+          detalhe.to_ascii
         end
 
         # Trailer do arquivo remessa

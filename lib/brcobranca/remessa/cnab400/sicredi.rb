@@ -120,7 +120,7 @@ module Brcobranca
           detalhe << ''.rjust(14, ' ')                                      # Doc. do Sacador/Avalista              X[14]
           detalhe << ''.rjust(41, ' ')                                      # Nome do Sacador/Avalista              X[14]
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
-          detalhe
+          detalhe.to_ascii
         end
         
         def monta_detalhe_multa(pagamento, sequencial)

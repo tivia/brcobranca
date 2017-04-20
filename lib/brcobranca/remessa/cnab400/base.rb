@@ -35,7 +35,7 @@ module Brcobranca
           # data geracao          [6]        formato DDMMAA
           # complemento registro  [294]
           # num. sequencial       [6]        000001
-          "01REMESSA01COBRANCA       #{info_conta}#{empresa_mae.format_size(30)}#{cod_banco}#{nome_banco}#{data_geracao}#{complemento}000001"
+          "01REMESSA01COBRANCA       #{info_conta}#{empresa_mae.format_size(30).to_ascii}#{cod_banco}#{nome_banco}#{data_geracao}#{complemento}000001"
         end
 
         # Trailer do arquivo remessa
@@ -91,10 +91,12 @@ module Brcobranca
             end
           end
           ret << monta_trailer(contador + 1)
-
-          remittance = ret.join("\n").to_ascii("Ç" => "Ç").upcase
+          
+          remittance = ret.join("\n").upcase #.to_ascii("Ç" => "Ç").upcase
+          
           remittance << "\n"
-
+          
+          
           remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)
         end
 
