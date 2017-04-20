@@ -107,7 +107,7 @@ module Brcobranca
           # 394   287 A(287) Complemento do Registro: Brancos
           # 400   006 9(006) Seqüencial do Registro:”000001”
 
-          "01REMESSA01COBRANÇA       #{info_conta}#{empresa_mae.format_size(30).to_ascii}#{cod_banco}#{nome_banco}#{data_geracao}#{sequencial_remessa}#{complemento}000001"
+          "01REMESSA01COBRANÇA#{''.rjust(7, ' ')}#{info_conta}#{empresa_mae.format_size(30).to_ascii}#{cod_banco}#{nome_banco}#{data_geracao}#{sequencial_remessa}#{complemento}000001"
         end
 
         # Detalhe do arquivo
