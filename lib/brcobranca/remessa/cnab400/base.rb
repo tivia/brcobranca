@@ -92,7 +92,7 @@ module Brcobranca
           end
           ret << monta_trailer(contador + 1)
 
-          remittance = ret.join("\n").to_ascii.upcase
+          remittance = ret.join("\n").to_ascii("Ç" => "Ç").upcase
           remittance << "\n"
 
           remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)

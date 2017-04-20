@@ -151,6 +151,7 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicoob do
         header = sicoob.monta_header
         expect(header[1]).to eq '1' # tipo operacao (1 = remessa)
         expect(header[2..8]).to eq 'REMESSA' # literal da operacao
+         expect(header[11..18]).to eq 'COBRANÇA' # literal da operacao
         expect(header[26..45]).to eq sicoob.info_conta # informacoes da conta
         expect(header[76..78]).to eq '756' # codigo do banco
       end
