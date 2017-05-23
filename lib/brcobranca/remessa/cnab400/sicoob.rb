@@ -6,7 +6,9 @@ module Brcobranca
       class Sicoob < Brcobranca::Remessa::Cnab400::Base
         # convenio do cedente
         attr_accessor :convenio
-
+        
+        attr_accessor :digito_agencia
+        
         attr_accessor :modalidade_carteira
         # identificacao da emissao do boleto (attr na classe base)
         #   opcoes:
@@ -27,11 +29,12 @@ module Brcobranca
         #            "4" -A4 sem envelopamento
         #            "6" -A4 sem envelopamento 3 vias
       
-        validates_presence_of :agencia, :conta_corrente, :carteira, :convenio, :digito_conta, :sequencial_remessa, :documento_cedente, message: 'não pode estar em branco.'
+        validates_presence_of :agencia, :digito_agencia, :conta_corrente, :carteira, :convenio, :digito_conta, :sequencial_remessa, :documento_cedente, message: 'não pode estar em branco.'
         # Remessa 400 - 8 digitos
         # Remessa 240 - 12 digitos
         validates_length_of :conta_corrente, maximum: 8, message: 'deve ter 8 dígitos no máximo.'
         validates_length_of :agencia, is: 4, message: 'deve ter 4 dígitos.'
+        validates_length_of :digito_agencia, maximum: 1, message: 'deve ter 1 dígito.'
         validates_length_of :digito_conta, maximum: 1, message: 'deve ter 1 dígito.'
         validates_length_of :sequencial_remessa, maximum: 7, message: 'deve ter 7 dígitos.'
         validates_length_of :carteira, maximum: 2, message: 'deve ter 2 dígitos no máximo.'
@@ -69,11 +72,11 @@ module Brcobranca
           "#{agencia}#{digito_agencia}#{convenio.rjust(9, '0')}#{''.rjust(6, ' ')}"
         end
 
-        def digito_agencia
+        #def digito_agencia
           # utilizando a agencia com 4 digitos
           # para calcular o digito
-          agencia.modulo11.to_s
-        end
+        #  agencia.modulo11.to_s
+        #end
 
         # Complemento do header
         #
