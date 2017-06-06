@@ -94,7 +94,7 @@ module Brcobranca
           
           remittance = ret.join("\n").upcase #.to_ascii("Ç" => "Ç").upcase
           
-          remittance << "\n"
+          #remittance << "\n"
           
           
           remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)
