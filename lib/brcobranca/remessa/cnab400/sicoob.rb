@@ -9,6 +9,8 @@ module Brcobranca
         
         attr_accessor :digito_agencia
         
+        attr_accessor :cod_movimento
+        
         attr_accessor :modalidade_carteira
         # identificacao da emissao do boleto (attr na classe base)
         #   opcoes:
@@ -38,6 +40,7 @@ module Brcobranca
         validates_length_of :digito_conta, maximum: 1, message: 'deve ter 1 dígito.'
         validates_length_of :sequencial_remessa, maximum: 7, message: 'deve ter 7 dígitos.'
         validates_length_of :carteira, maximum: 2, message: 'deve ter 2 dígitos no máximo.'
+        validates_length_of :cod_movimento, is: 2, message: 'deve ter 2 dígitos.'
         validates_length_of :documento_cedente, minimum: 11, maximum: 14, message: 'deve ter entre 11 e 14 dígitos.'
         validates_length_of :convenio, maximum: 7, message: 'não deve ser maior que 7 dígitos.' # Com DV
 
@@ -180,7 +183,7 @@ module Brcobranca
           # 31 = Alteração de Outros Dados
           # 34 = Baixa - Pagamento Direto ao Beneficiário
 
-          detalhe << "01"                                      # identificacao ocorrencia              9[02]
+          detalhe << cod_movimento                                          # identificacao ocorrencia              9[02]
           detalhe << pagamento.numero_documento.to_s.rjust(10, '0')         # numero do documento                   X[10]
           detalhe << pagamento.data_vencimento.strftime('%d%m%y')           # data do vencimento                    9[06]
           detalhe << pagamento.formata_valor                                # valor do documento                    9[13]
