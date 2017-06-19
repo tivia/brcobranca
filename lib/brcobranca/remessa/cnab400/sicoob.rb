@@ -54,7 +54,7 @@ module Brcobranca
         end
         
         def finalizador
-          nil
+          ""
         end
 
         def cod_banco
