@@ -131,6 +131,10 @@ module Brcobranca
           "91748#{convenio}#{''.rjust(384, ' ')}#{sequencial.to_s.rjust(6, '0')}"
         end
         
+        def finalizador
+          "\n"
+        end
+        
         private
         
         def nosso_numero(pagamento)

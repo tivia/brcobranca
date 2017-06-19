@@ -94,10 +94,14 @@ module Brcobranca
           
           remittance = ret.join("\n").upcase #.to_ascii("Ç" => "Ç").upcase
           
-          #remittance << "\n"
+          remittance << (finalizador if finalizador)
           
           
           remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)
+        end
+        
+        def finalizador
+          raise Brcobranca::NaoImplementado, 'Sobreescreva este método na classe referente ao banco que você esta criando'
         end
 
         # Informacoes referentes a conta do cedente

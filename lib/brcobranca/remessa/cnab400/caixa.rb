@@ -17,6 +17,11 @@ module Brcobranca
           campos = { aceite: 'N' }.merge!(campos)
           super(campos)
         end
+        
+        def finalizador
+        
+          "\n"
+        end
 
         def agencia=(valor)
           @agencia = valor.to_s.rjust(4, '0') if valor

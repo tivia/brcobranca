@@ -73,6 +73,10 @@ module Brcobranca
           return 'E' if carteira.to_s == '147'
           'I'
         end
+        
+        def finalizador
+          "\n"
+        end
 
         # Detalhe do arquivo
         #

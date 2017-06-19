@@ -52,6 +52,10 @@ module Brcobranca
           }.merge!(campos)
           super(campos)
         end
+        
+        def finalizador
+          nil
+        end
 
         def cod_banco
           '756'
