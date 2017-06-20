@@ -144,6 +144,7 @@ module Brcobranca
           doc.define_tags do
             tag :grande, size: 13
             tag :media, size: 10
+            tag :pequena, size: 8
           end
         end
 
@@ -226,9 +227,13 @@ module Brcobranca
           doc.moveto x: colunas[11], y: linhas[1]
           doc.show boleto.data_vencimento.to_s_br
 
-          # cedente
-          doc.moveto x: colunas[2], y: linhas[2]
-          doc.show boleto.cedente
+          # beneficiario
+          doc.moveto x: (colunas[2] + 1.0), y: (linhas[2] + 0.3)
+          doc.show boleto.cedente, tag: :pequena
+          
+          # beneficiario endereco
+          doc.moveto x: (colunas[2] + 1.0), y: (linhas[2] - 0.3)
+          doc.show boleto.cedente_endereco, tag: :pequena
 
           # agencia/codigo cedente
           doc.moveto x: colunas[11], y: linhas[2]
