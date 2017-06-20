@@ -228,11 +228,11 @@ module Brcobranca
           doc.show boleto.data_vencimento.to_s_br
 
           # beneficiario
-          doc.moveto x: (colunas[2] + 1.0), y: (linhas[2] + 0.3)
-          doc.show boleto.cedente, tag: :pequena
+          doc.moveto x: (colunas[2] + 1.3), y: (linhas[2] + 0.25)
+          doc.show "#{boleto.cedente} - #{boleto.documento_cedente}", tag: :pequena
           
           # beneficiario endereco
-          doc.moveto x: (colunas[2] + 1.0), y: (linhas[2] - 0.3)
+          doc.moveto x: colunas[2], y: linhas[2]
           doc.show boleto.cedente_endereco, tag: :pequena
 
           # agencia/codigo cedente
