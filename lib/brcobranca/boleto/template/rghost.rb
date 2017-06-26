@@ -186,7 +186,7 @@ module Brcobranca
           if boleto.cedente_endereco
             doc.show boleto.cedente_endereco
             doc.moveto x: '1.9 cm', y: '15.5 cm'
-            doc.show boleto.cedente
+            doc.show "#{boleto.cedente} #{boleto.documento_cedente}"
           else
             doc.show boleto.cedente
           end
