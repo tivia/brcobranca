@@ -44,7 +44,7 @@ module Brcobranca
         end
         
         def info_conta
-          "#{convenio.to_s.rjust(5,'0')}#{documento_cedente.to_s.rjust(14,' ')}#{''.rjust(31, ' ')}"
+          "#{convenio.to_s.rjust(5,'0')}#{documento_cedente.to_s.rjust(14,'0')}#{''.rjust(31, ' ')}"
         end
         
         def data_geracao
