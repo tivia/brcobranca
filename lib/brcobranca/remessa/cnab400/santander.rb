@@ -197,6 +197,10 @@ module Brcobranca
           # num. sequencial                       [6]
           "9#{sequencial.to_s.rjust(6, '0')}#{valor_total_titulos(13)}#{''.rjust(374, '0')}#{sequencial.to_s.rjust(6, '0')}"
         end
+        
+        def monta_detalhe_multa(pagamento, sequencial)
+          nil
+        end
 
         private
 
