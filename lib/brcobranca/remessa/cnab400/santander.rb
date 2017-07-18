@@ -201,6 +201,10 @@ module Brcobranca
         def monta_detalhe_multa(pagamento, sequencial)
           nil
         end
+        
+        def finalizador
+          "\n"
+        end
 
         private
 
