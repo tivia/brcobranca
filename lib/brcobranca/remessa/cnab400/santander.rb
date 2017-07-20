@@ -131,7 +131,7 @@ module Brcobranca
           # Código da agência cobradora do Banco Santander,
           # opcional informar somente se carteira for igual a 5,
           # caso contrário, informar zeros.
-          detalhe << (codigo_carteira == '5' ? agencia.rjust(5, '0') : ''.rjust(5, '0')  # agencia cobradora..............       9[05]
+          detalhe << (codigo_carteira == '5' ? agencia.rjust(5, '0') : ''.rjust(5, '0'))  # agencia cobradora..............       9[05]
 
           # Espécie de documento:
           # 01 = DUPLICATA
