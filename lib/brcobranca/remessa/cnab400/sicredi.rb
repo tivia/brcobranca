@@ -79,7 +79,7 @@ module Brcobranca
           detalhe << 'A'                                                    # Tipo de Desconto B - Percentural      X[01]
           detalhe << 'B'                                                    # Tipo de Juros    B - Percentural      X[01]
           detalhe << ''.rjust(28, ' ')                                      # Espaço em branco                      X[28]
-          detalhe << nosso_numero(pagamento)                                # Nosso Numero                          9[09]
+          detalhe << pagamento.nosso_numero.rjust(9, '0')                   # Nosso Numero                          9[09]
           detalhe << ''.rjust(6, ' ')                                       # Espaço em branco                      X[06]
           detalhe << pagamento.data_emissao.strftime('%Y%m%d')              # Data da instrução                     9[08]
           detalhe << ''.rjust(1, ' ')                                       # Espaço em branco                      X[01]
@@ -133,30 +133,6 @@ module Brcobranca
         
         def finalizador
           "\n"
-        end
-        
-        private
-        
-        def nosso_numero(pagamento)
-          "#{numero_documento_com_byte_idt(pagamento)}#{nosso_numero_dv(pagamento)}"
-        end
-        
-        def numero_documento_com_byte_idt(pagamento)
-          "#{pagamento.data_emissao.strftime('%y')}#{byte_idt}#{pagamento.nosso_numero.to_s.rjust(5,'0')}"
-        end
-        def nosso_numero_dv(pagamento)
-          "#{agencia_posto_conta}#{numero_documento_com_byte_idt(pagamento)}".modulo11(mapeamento: mapeamento_para_modulo_11)
-        end
-        
-        def agencia_posto_conta
-          "#{agencia}#{posto}#{convenio}"
-        end
-        
-        def mapeamento_para_modulo_11
-          {
-            10 => 0,
-            11 => 0
-          }
         end
       end
     end
