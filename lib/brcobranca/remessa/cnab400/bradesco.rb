@@ -44,6 +44,10 @@ module Brcobranca
         def nome_banco
           'BRADESCO'.ljust(15, ' ')
         end
+        
+        def finalizador
+          "\n"
+        end
 
         def complemento
           "#{''.rjust(8, ' ')}MX#{sequencial_remessa}#{''.rjust(277, ' ')}"
