@@ -92,8 +92,8 @@ module Brcobranca
           detalhe << ''.rjust(25, ' ')                                # num. controle                               X[25]       038 a 062
           detalhe << ''.rjust(3, '0')                                 # codigo do banco (debito automatico apenas)  9[03]       063 a 065
           
-          detalhe << pagamento.codigo_multa.to_s.rjust(1, '0')                  # campo da multa                              9[01]       066 a 066 *
-          detalhe << pagamento.formata_valor_multa.rjust(4, '0')      # percentual multa                            9[04]       067 a 070 *
+          detalhe << pagamento.codigo_multa.to_s.rjust(1, '0')        # campo da multa                              9[01]       066 a 066 *
+          detalhe << pagamento.formata_valor_multa(4).rjust(4, '0')   # percentual multa                            9[04]       067 a 070 *
           detalhe << pagamento.nosso_numero.to_s.rjust(11, '0')       # identificacao do titulo (nosso numero)      9[11]       071 a 081
           detalhe << digito_nosso_numero(pagamento.nosso_numero).to_s # digito de conferencia do nosso numero (dv)  X[01]       082 a 082
           detalhe << ''.rjust(10, '0')                                # desconto por dia                            9[10]       083 a 092
