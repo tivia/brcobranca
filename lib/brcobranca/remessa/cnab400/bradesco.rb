@@ -130,6 +130,10 @@ module Brcobranca
           detalhe << sequencial.to_s.rjust(6, '0')                    # numero do registro do arquivo               9[06]       395 a 400
           detalhe
         end
+        
+        def monta_detalhe_multa(pagamento, sequencial)
+          nil
+        end
       end
     end
   end
