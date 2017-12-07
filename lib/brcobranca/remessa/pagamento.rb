@@ -72,6 +72,8 @@ module Brcobranca
       attr_accessor :parcela
       # <b>OPCIONAL</b>: Dias para o protesto
       attr_accessor :dias_protesto
+      
+      attr_accessor :cod_movimento
 
       validates_presence_of :nosso_numero, :data_vencimento, :valor,
                             :documento_sacado, :nome_sacado, :endereco_sacado,
