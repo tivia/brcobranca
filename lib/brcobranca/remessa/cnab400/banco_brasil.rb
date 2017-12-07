@@ -162,6 +162,10 @@ module Brcobranca
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
           detalhe.to_ascii
         end
+        
+        def finalizador
+          "\n"
+        end
       end
     end
   end
