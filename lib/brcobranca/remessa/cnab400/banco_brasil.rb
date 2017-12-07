@@ -156,7 +156,7 @@ module Brcobranca
           detalhe =  '5'                                                    # identificacao transacao               9[01]
           detalhe << '99'                                                   # tipo de serviço                       9[02]
           detalhe << pagamento.codigo_multa.to_s.rjust(1, '0')              # codigo da multa - valor em percent.   9[01]
-          detalhe << pagamento.data_multa.strftime('%d%m%Y')                # data da multa                         9[08]
+          detalhe << pagamento.data_multa.strftime('%d%m%y')                # data da multa                         9[08]
           detalhe << pagamento.formata_valor_multa(12)                      # percentual multa                      9[13]
           detalhe << ''.rjust(372, ' ')                                     # complemento do registro (brancos)     X[370]
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
