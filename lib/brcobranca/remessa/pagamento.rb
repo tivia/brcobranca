@@ -171,8 +171,8 @@ module Brcobranca
       # @param tamanho [Integer]
       #   quantidade de caracteres a ser retornado
       #
-      def formata_valor_mora(tamanho = 13)
-        format_value(valor_mora, tamanho)
+      def formata_valor_mora(tamanho = 13, fracao = 2)
+        format_value(valor_mora, tamanho, fracao)
       end
 
       # Formata o campo valor da multa
@@ -180,8 +180,8 @@ module Brcobranca
       # @param tamanho [Integer]
       #   quantidade de caracteres a ser retornado
       #
-      def formata_valor_multa(tamanho = 6)
-        format_value(percentual_multa, tamanho)
+      def formata_valor_multa(tamanho = 6, fracao = 2)
+        format_value(percentual_multa, tamanho, fracao)
       end
       
       def formata_valor_multa_em_reais(tamanho = 10)
@@ -244,10 +244,9 @@ module Brcobranca
 
       private
 
-      def format_value(value, tamanho)
+      def format_value(value, tamanho, fracao = 2)
         raise ValorInvalido, 'Deve ser um Float' unless value.to_s =~ /\./
-
-        sprintf('%.2f', value).delete('.').rjust(tamanho, '0')
+        sprintf("%.#{fracao}f", value).delete('.').rjust(tamanho, '0')
       end
     end
   end

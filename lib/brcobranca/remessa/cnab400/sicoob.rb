@@ -236,8 +236,8 @@ module Brcobranca
           # 43 = DEVOLVER APOS 30 DIAS VENCIDO"
           detalhe << '01'                                                   # Instrução para o título               9[02]
           detalhe << '00'                                                   # Número de dias válidos para instrução 9[02]
-          detalhe << pagamento.formata_valor_mora(6)                        # valor mora ao mês                     9[06]
-          detalhe << pagamento.formata_valor_multa(6)                       # taxa de multa                         9[06]
+          detalhe << pagamento.formata_valor_mora(6, 4)                        # valor mora ao mês                     9[06]
+          detalhe << pagamento.formata_valor_multa(6, 4)                       # taxa de multa                         9[06]
           detalhe << "2"                                                  # indentificacao entrega                9[01]
           detalhe << pagamento.formata_data_desconto                        # data limite para desconto             9[06]
           detalhe << pagamento.formata_valor_desconto                       # valor do desconto                     9[13]
