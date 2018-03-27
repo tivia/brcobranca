@@ -220,7 +220,8 @@ module Brcobranca
           doc.show boleto.codigo_barras.linha_digitavel, tag: :media
 
           # local de pagamento
-          doc.moveto x: colunas[2], y: linhas[1], tag: :pequena
+          doc.moveto x: colunas[2], y: linhas[1]
+          doc.show boleto.local_pagamento, tag: :pequena
 
           # vencimento
           doc.moveto x: colunas[11], y: linhas[1]
