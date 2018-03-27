@@ -161,7 +161,7 @@ module Brcobranca
 
         # define as linhas do documento conforme margem inferior
         def calc_linhas(margin_bottom)
-          linhas = [8.7, 8.10, 7.42, 6.84, 6.24, 5.6, 5.2, 4.8, 4.4, 4.0, 3.6, 2.82, 2.42, 2.19, 0.6]
+          linhas = [8.7, 8.06, 7.42, 6.84, 6.24, 5.6, 5.2, 4.8, 4.4, 4.0, 3.6, 2.82, 2.42, 2.19, 0.6]
 
           linhas.each_with_index do |v, i|
             linhas[i] = v + margin_bottom
