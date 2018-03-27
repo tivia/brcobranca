@@ -144,7 +144,7 @@ module Brcobranca
           doc.define_tags do
             tag :grande, size: 13
             tag :media, size: 10
-            tag :pequena, size: 6
+            tag :pequena, size: 7
           end
         end
 
