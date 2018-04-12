@@ -77,7 +77,7 @@ module Brcobranca
           detalhe << ''.rjust(12, ' ')                                      # Espaço em branco                      X[12]  
           detalhe << 'A'                                                    # Tipo de Moeda    A - Real             X[01]
           detalhe << 'A'                                                    # Tipo de Desconto B - Percentural      X[01]
-          detalhe << 'B'                                                    # Tipo de Juros    B - Percentural      X[01]
+          detalhe << 'A'                                                    # Tipo de Juros A - Valor   B - Perce   X[01]
           detalhe << ''.rjust(28, ' ')                                      # Espaço em branco                      X[28]
           detalhe << pagamento.nosso_numero.rjust(9, '0')                   # Nosso Numero                          9[09]
           detalhe << ''.rjust(6, ' ')                                       # Espaço em branco                      X[06]
