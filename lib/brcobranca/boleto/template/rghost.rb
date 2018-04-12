@@ -138,8 +138,12 @@ module Brcobranca
           doc.show "#{boleto.banco}-#{boleto.banco_dv}", tag: :grande
           doc.moveto x: '7.5 cm', y: '23.9 cm'
           doc.show boleto.codigo_barras.linha_digitavel, tag: :grande
-          doc.moveto x: '0.7 cm', y: '23.0 cm'
-          doc.show boleto.cedente
+          doc.moveto x: '1.9 cm', y: '23.45 cm'
+          doc.show "#{boleto.cedente} #{boleto.documento_cedente}"
+          if boleto.cedente_endereco
+            doc.moveto x: '0.7 cm', y: '23 cm'
+            doc.show boleto.cedente_endereco
+          end
           doc.moveto x: '11 cm', y: '23 cm'
           doc.show boleto.agencia_conta_boleto
           doc.moveto x: '14.2 cm', y: '23 cm'
@@ -156,7 +160,7 @@ module Brcobranca
           doc.show boleto.nosso_numero_boleto, align: :show_right
           doc.moveto x: '20.3 cm', y: '22.2 cm'
           doc.show boleto.valor_documento.to_currency, align: :show_right
-          doc.moveto x: '1.5 cm', y: '20.9 cm'
+          doc.moveto x: '1.5 cm', y: '21.0 cm'
           doc.show "#{boleto.sacado} - #{boleto.sacado_documento.formata_documento}"
           doc.moveto x: '1.5 cm', y: '20.6 cm'
           doc.show boleto.sacado_endereco.to_s
@@ -182,13 +186,11 @@ module Brcobranca
           doc.show boleto.local_pagamento
           doc.moveto x: '20.3 cm', y: '16 cm'
           doc.show boleto.data_vencimento.to_s_br, align: :show_right if boleto.data_vencimento
-          doc.moveto x: '0.7 cm', y: '15.2 cm'
+          doc.moveto x: '1.9 cm', y: '15.6 cm'
+          doc.show "#{boleto.cedente} #{boleto.documento_cedente}"
           if boleto.cedente_endereco
+            doc.moveto x: '0.7 cm', y: '15.2 cm'
             doc.show boleto.cedente_endereco
-            doc.moveto x: '1.9 cm', y: '15.5 cm'
-            doc.show "#{boleto.cedente} #{boleto.documento_cedente}"
-          else
-            doc.show boleto.cedente
           end
           doc.moveto x: '20.3 cm', y: '15.2 cm'
           doc.show boleto.agencia_conta_boleto, align: :show_right
