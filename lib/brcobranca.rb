@@ -9,7 +9,8 @@ require 'brcobranca/formatacao'
 require 'brcobranca/formatacao_string'
 require 'brcobranca/calculo_data'
 require 'brcobranca/currency'
-
+require 'brcobranca/validations'
+require 'brcobranca/util/date'
 module Brcobranca
   # Exception lançada quando algum tipo de boleto soicitado ainda não tiver sido implementado.
   class NaoImplementado < RuntimeError
@@ -162,15 +163,21 @@ module Brcobranca
     end
 
     module Cnab240
-      autoload :Base,         'brcobranca/remessa/cnab240/base'
-      autoload :Caixa,        'brcobranca/remessa/cnab240/caixa'
-      autoload :BancoBrasil,  'brcobranca/remessa/cnab240/banco_brasil'
-      autoload :Sicoob,       'brcobranca/remessa/cnab240/sicoob'
+      autoload :Base,               'brcobranca/remessa/cnab240/base'
+      autoload :BaseCorrespondente, 'brcobranca/remessa/cnab240/base_correspondente'
+      autoload :Caixa,              'brcobranca/remessa/cnab240/caixa'
+      autoload :Cecred,             'brcobranca/remessa/cnab240/cecred'
+      autoload :BancoBrasil,        'brcobranca/remessa/cnab240/banco_brasil'
+      autoload :Sicoob,             'brcobranca/remessa/cnab240/sicoob'
+      autoload :SicoobBancoBrasil,  'brcobranca/remessa/cnab240/sicoob_banco_brasil'
+      autoload :Sicredi,            'brcobranca/remessa/cnab240/sicredi'
+      autoload :Unicred,            'brcobranca/remessa/cnab240/unicred'
     end
   end
 
   # Módulos para classes de utilidades
   module Util
     autoload :Empresa, 'brcobranca/util/empresa'
+    autoload :Errors, 'brcobranca/util/errors'
   end
 end
