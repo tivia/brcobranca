@@ -38,7 +38,7 @@ module Brcobranca
         def initialize(campos = {})
           campos = { emissao_boleto: '2',
             distribuicao_boleto: '2',
-            especie_titulo: '02',
+            especie_titulo: '04',
             tipo_formulario: '4',
             parcela: '01',
             modalidade_carteira: '01',
@@ -214,7 +214,19 @@ module Brcobranca
         #            "6" -A4 sem envelopamento 3 vias
         #       Em branco - 05 posições (16 a 20)
         def formata_nosso_numero(nosso_numero)
-          "#{nosso_numero.to_s.rjust(10, '0')}#{parcela}#{modalidade_carteira}#{tipo_formulario}     "
+          "#{nosso_numero_com_dv(nosso_numero).to_s.rjust(10, '0')}#{parcela}#{modalidade_carteira}#{tipo_formulario}     "
+        end
+
+        def nosso_numero_com_dv(nosso_numero)
+          "#{nosso_numero.to_s.rjust(9, '0')}#{nosso_numero_dv(nosso_numero)}"
+        end
+
+        def nosso_numero_dv(nosso_numero)
+          "#{agencia}#{convenio.to_s.rjust(10, '0')}#{nosso_numero.to_s.rjust(7,'0')}".modulo11(
+            reverse: false,
+            multiplicador: [3, 1, 9, 7],
+            mapeamento: { 10 => 0, 11 => 0 }
+          ) { |t| 11 - (t % 11) }
         end
 
         def dias_baixa(pagamento)
