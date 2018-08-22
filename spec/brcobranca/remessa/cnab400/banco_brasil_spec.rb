@@ -27,7 +27,8 @@ RSpec.describe Brcobranca::Remessa::Cnab400::BancoBrasil do
       documento_cedente: '12345678910',
       sequencial_remessa: '1',
       pagamentos: [pagamento],
-      tipo_cobranca: '04DSC' }
+      tipo_cobranca: '04DSC',
+      cod_movimento: '01' }
   end
   let(:banco_brasil) { subject.class.new(params) }
 

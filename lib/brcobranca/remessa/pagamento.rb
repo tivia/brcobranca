@@ -56,6 +56,15 @@ module Brcobranca
       # Poderá conter número de duplicata, no caso de cobrança de duplicatas; número da apólice,
       # no caso de cobrança de seguros, etc
       attr_accessor :numero_documento
+
+      # <b>OPCIONAL</b>: Número do Documento de Cobrança - Número adotado e controlado pelo Cliente,
+      # para identificar o título de cobrança.
+      # Informação utilizada para referenciar a identificação do documento objeto de cobrança.
+      # Poderá conter número de duplicata, no caso de cobrança de duplicatas; número da apólice,
+      # no caso de cobrança de seguros, etc
+      attr_accessor :numero
+      # <b>OPCIONAL</b>: Número utilizado para controle do beneficiário/cedente
+      attr_accessor :documento
       # <b>OPCIONAL</b>: data limite para o desconto
       attr_accessor :data_segundo_desconto
       # <b>OPCIONAL</b>: valor a ser concedido de desconto
@@ -72,7 +81,17 @@ module Brcobranca
       attr_accessor :parcela
       # <b>OPCIONAL</b>: Dias para o protesto
       attr_accessor :dias_protesto
-      
+    
+      # <b>OPCIONAL</b>: Tipo de Mora
+      attr_accessor :tipo_mora
+      # <b>OPCIONAL</b>: codigo do protesto
+      attr_accessor :codigo_protesto
+      # <b>OPCIONAL</b>: dias para protesto
+      attr_accessor :dias_protesto
+      # <b>OPCIONAL</b>: codigo baixa
+      attr_accessor :codigo_baixa
+      # <b>OPCIONAL</b>: dias para baixa
+      attr_accessor :dias_baixa
       attr_accessor :cod_movimento
 
       validates_presence_of :nosso_numero, :data_vencimento, :valor,
@@ -92,6 +111,7 @@ module Brcobranca
         padrao = {
           data_emissao: Date.current,
           valor_mora: 0.0,
+          tipo_mora: "3",
           valor_desconto: 0.0,
           valor_segundo_desconto: 0.0,
           valor_iof: 0.0,
@@ -102,7 +122,13 @@ module Brcobranca
           identificacao_ocorrencia: '01',
           codigo_multa: '0',
           percentual_multa: 0.0,
-          parcela: '01'
+          parcela: '01',
+          codigo_protesto: '3',
+          dias_protesto: '00',
+          codigo_baixa: '0',
+          dias_baixa: '000',
+          cod_primeira_instrucao: '00',
+          cod_segunda_instrucao: '00'
         }
 
         campos = padrao.merge!(campos)
@@ -139,6 +165,15 @@ module Brcobranca
         else
           '00000000'
         end
+      end
+
+      def documento_ou_numero
+        documento.present? ? documento : numero
+      end
+
+      def formata_documento_ou_numero(tamanho = 25, caracter = ' ')
+        doc = documento_ou_numero.to_s.gsub(/[^0-9A-Za-z ]/, '')
+        doc.rjust(tamanho, caracter)[0...tamanho]
       end
 
       # Formata a data de cobrança da multa
@@ -187,6 +222,17 @@ module Brcobranca
       def formata_valor_multa_em_reais(tamanho = 10)
         valor_multa = (valor * (percentual_multa.to_f / 100)) if percentual_multa > 0
         format_value((valor_multa || 0.0), tamanho)
+      end
+
+       # Formata a valor do percentual da multa
+      #
+      # @param tamanho [Integer]
+      #   quantidade de caracteres a ser retornado
+      #
+      # @return [String]
+      #
+      def formata_percentual_multa(tamanho = 4)
+        format_value(percentual_multa, tamanho)
       end
 
       # Formata o campo valor do desconto

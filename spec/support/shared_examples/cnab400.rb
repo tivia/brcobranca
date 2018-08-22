@@ -45,11 +45,13 @@ shared_examples_for 'cnab400' do
     elsif subject.class == Brcobranca::Remessa::Cnab400::Sicoob
       { carteira: '01',
         agencia: '1234',
+        digito_agencia: '9',
         conta_corrente: '12345678',
         digito_conta: '1',
         empresa_mae: 'SOCIEDADE BRASILEIRA DE ZOOLOGIA LTDA',
         documento_cedente: '12345678910',
         convenio: '95634',
+        cod_movimento: '01',
         pagamentos: [pagamento] }
      elsif subject.class == Brcobranca::Remessa::Cnab400::Sicredi
       { 

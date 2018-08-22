@@ -19,16 +19,18 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicoob do
   let(:params) do
     { carteira: '01',
       agencia: '3027',
+      digito_agencia: '9',
       conta_corrente: '00027377',
       digito_conta: '5',
       convenio: '94870',
       empresa_mae: 'E SANTOS SOUZA - PROVEDOR DE I',
-      documento_cedente: '01980276560,',
+      documento_cedente: '01980276560',
+      cod_movimento: '01',
       pagamentos: [pagamento] }
   end
   let(:sicoob) { subject.class.new(params) }
 
-  context 'validacoes dos campos' do
+  context 'validacoes dos campos' do 
     context '@agencia' do
       it 'deve ser invalido se nao possuir uma agencia' do
         objeto = subject.class.new(params.merge!(agencia: nil))
