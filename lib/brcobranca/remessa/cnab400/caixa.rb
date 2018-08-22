@@ -124,7 +124,7 @@ module Brcobranca
             detalhe << pagamento.formata_valor_multa_em_reais                 # valor da multa                        9[10]
             detalhe << pagamento.nome_avalista.format_size(22)                # nome do sacador/avalista              X[22]
             detalhe << ''.rjust(2, '0')                                       # 3a instrucao - deixar zero            X[02]
-            detalhe << '60'                                                   # Núm. dias p/ início do prot./ dev     9[02]
+            detalhe << '28'                                                   # Núm. dias p/ início do prot./ dev     9[02]
             detalhe << '1'                                                    # codigo da moeda                       9[01]    
             detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
             detalhe.to_ascii
