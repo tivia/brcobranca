@@ -169,7 +169,7 @@ module Brcobranca
         end
 
         def monta_detalhe_agencia
-          versao_007? ? ''.rjust(3, ' ') : agencia
+          versao_007? ? ''.rjust(3, '0') : agencia
         end
 
         def monta_detalhe_config_judors_desconto
@@ -180,10 +180,6 @@ module Brcobranca
           conf += '0'                 # Tipo de desconto, sem desconto
           conf += ''.rjust(22, ' ')   # Campos em branco
           conf
-        end
-
-        def monta_detalhe_agencia
-          versao_007? ? ''.rjust(3, ' ') : agencia
         end
 
         def monta_detalhe_multa(pagamento, sequencial)
