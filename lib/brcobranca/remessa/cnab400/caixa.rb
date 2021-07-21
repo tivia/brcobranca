@@ -49,6 +49,12 @@ module Brcobranca
           'C ECON FEDERAL'.ljust(15, ' ')
         end
 
+        def versao_007?
+          return false unless codigo_beneficiario
+
+          codigo_beneficiario.size > 6
+        end
+
         # Informacoes da conta corrente do cedente
         #
         # @return [String]
@@ -64,7 +70,7 @@ module Brcobranca
         end
 
         def uso_exclusivo_header
-          codigo_beneficiario.size > 6 ? 9 : 10
+          versao_007? ? 9 : 10
         end
 
         # Complemento do header
@@ -78,7 +84,7 @@ module Brcobranca
 
         def versao_layout
           tres_espacos = ' ' * 3
-          codigo_beneficiario.size > 6 ? '007' : tres_espacos
+          versao_007? ? '007' : tres_espacos
         end
 
         # Header do arquivo remessa
@@ -117,19 +123,19 @@ module Brcobranca
             detalhe = '1'                                                     # identificacao transacao               9[01]
             detalhe << Brcobranca::Util::Empresa.new(documento_cedente).tipo  # tipo de identificacao da empresa      9[02]
             detalhe << documento_cedente.to_s.rjust(14, '0')                  # cpf/cnpj da empresa                   9[14]
-            detalhe << agencia                                                # agencia                               9[04]
-            detalhe << codigo_beneficiario                                    # codigo do beneficiario                9[06]
+            detalhe << monta_detalhe_agencia                                  # agencia                               9[04] ou 9[03]
+            detalhe << codigo_beneficiario                                    # codigo do beneficiario                9[06] ou 9[07]
             detalhe << '2'                                                    # Identificação de emissão do boleto    9[01]
             detalhe << '0'                                                    # Identificação da Entrega/Distrib.     9[01]
             detalhe << '00'                                                   # Comissão de Permanência               9[02]
             detalhe << pagamento.numero_documento.to_s.rjust(25, '0')         # Identificação do Título na Empresa    X[25]
             detalhe << '14'                                                   # Modalidade do Nosso Numero            9[02]
             detalhe << pagamento.nosso_numero.to_s.rjust(15, '0')             # Nosso numero                          9[15]
-            detalhe << ''.rjust(3, ' ')                                        # preenchimneto em branco               X[03]
-            detalhe << ''.rjust(30, ' ')                                       # mensagem no boleto                    X[30]
+            detalhe << ''.rjust(3, ' ')                                       # preenchimneto em branco               X[03]
+            detalhe << monta_detalhe_config_judors_desconto                   # mensagem no boleto                    X[30]
             detalhe << carteira                                               # carteira                              9[02]
             detalhe << '01'                                                   # codigo de ocorrencia                  9[02]
-            detalhe << pagamento.numero_documento.to_s.rjust(10, '0')           # numero da cobranca                    X[10]
+            detalhe << pagamento.numero_documento.to_s.rjust(10, '0')         # numero da cobranca                    X[10]
             detalhe << pagamento.data_vencimento.strftime('%d%m%y')           # data do vencimento                    9[06]
             detalhe << pagamento.formata_valor                                # valor do documento                    9[13]
             detalhe << cod_banco                                              # banco de compensacao                  9[03]
@@ -161,7 +167,25 @@ module Brcobranca
             detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
             detalhe.to_ascii
         end
-        
+
+        def monta_detalhe_agencia
+          versao_007? ? ''.rjust(3, ' ') : agencia
+        end
+
+        def monta_detalhe_config_judors_desconto
+          return ''.rjust(30, ' ') unless versao_007?
+
+          conf =  '1'                 # Tipo de juros, valor para dias corridos
+          conf += ''.rjust(6, ' ')    # Data inicial para cobranca de juros
+          conf += '0'                 # Tipo de desconto, sem desconto
+          conf += ''.rjust(22, ' ')   # Campos em branco
+          conf
+        end
+
+        def monta_detalhe_agencia
+          versao_007? ? ''.rjust(3, ' ') : agencia
+        end
+
         def monta_detalhe_multa(pagamento, sequencial)
           nil
         end
