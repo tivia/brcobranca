@@ -16,7 +16,7 @@ module Brcobranca
       validates_length_of :carteira, is: 2, message: 'deve possuir 2 dígitos.'
       # Emissão do boleto (4-Beneficiário)
       validates_length_of :emissao, is: 1, message: 'deve possuir 1 dígitos.'
-      validates_length_of :convenio, is: 6, message: 'deve possuir 6 dígitos.'
+      validates_length_of :convenio, in: 6..7, message: 'deve possuir 6 ou 7 dígitos.'
       validates_length_of :numero_documento, is: 15, message: 'deve possuir 15 dígitos.'
 
       # Nova instância da CaixaEconomica
@@ -52,7 +52,9 @@ module Brcobranca
       # Número do convênio/contrato do cliente junto ao banco.
       # @return [String] 6 caracteres numéricos.
       def convenio=(valor)
-        @convenio = valor.to_s.rjust(6, '0') if valor
+        return unless valor
+
+        @convenio = valor.size > 6 ? valor.to_s.rjust(7, '0') : valor.to_s.rjust(6, '0')
       end
 
       # Número seqüencial utilizado para identificar o boleto.
