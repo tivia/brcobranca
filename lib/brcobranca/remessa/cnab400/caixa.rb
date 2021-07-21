@@ -7,7 +7,7 @@ module Brcobranca
         validates_presence_of :agencia, message: 'não pode estar em branco.'
         validates_presence_of :documento_cedente, message: 'não pode estar em branco.'
         validates_length_of :agencia, maximum: 4, message: 'deve ter 4 dígitos.'
-        validates_length_of :codigo_beneficiario, maximum: 6, message: 'deve ter 6 dígitos.'
+        validates_length_of :codigo_beneficiario, in: 6..7, message: 'deve ter 6 ou 7 dígitos.'
         validates_length_of :documento_cedente, minimum: 11, maximum: 14, message: 'deve ter entre 11 e 14 dígitos.'
         validates_length_of :carteira, maximum: 2, message: 'deve ter no máximo 2 dígitos.'
         
@@ -28,13 +28,15 @@ module Brcobranca
         end
 
         def codigo_beneficiario=(valor)
-          @codigo_beneficiario = valor.to_s.rjust(6, '0') if valor
+          return unless valor
+
+          @codigo_beneficiario = valor.size > 6 ? valor.to_s.rjust(7, '0') : valor.to_s.rjust(6, '0')
         end
 
         def carteira=(valor)
           @carteira = valor.to_s.rjust(2, '0') if valor
         end
-        
+
         def sequencial_remessa=(valor)
           @sequencial_remessa = valor.to_s.rjust(5, '0')
         end
@@ -58,7 +60,11 @@ module Brcobranca
           # conta corrente   5
           # digito da conta  1
           # complemento      8
-          "#{agencia}#{codigo_beneficiario}#{''.rjust(10, ' ')}"
+          "#{agencia}#{codigo_beneficiario}#{''.rjust(uso_exclusivo_header, ' ')}"
+        end
+
+        def uso_exclusivo_header
+          codigo_beneficiario.size > 6 ? 9 : 10
         end
 
         # Complemento do header
@@ -67,9 +73,35 @@ module Brcobranca
         # @return [String]
         #
         def complemento
-          "#{''.rjust(289, ' ')}#{sequencial_remessa}"
+          "#{''.rjust(286, ' ')}#{sequencial_remessa}"
         end
-        
+
+        def versao_layout
+          tres_espacos = ' ' * 3
+          codigo_beneficiario.size > 6 ? '007' : tres_espacos
+        end
+
+        # Header do arquivo remessa
+        #
+        # @return [String]
+        #
+        def monta_header
+          # CAMPO                 TAMANHO    VALOR
+          # tipo do registro      [1]        0
+          # operacao              [1]        1
+          # literal remessa       [7]        REMESSA
+          # Código do serviço     [2]        01
+          # cod. servico          [15]       COBRANCA
+          # info. conta           [20]
+          # empresa mae           [30]
+          # cod. banco            [3]
+          # nome banco            [15]
+          # data geracao          [6]        formato DDMMAA
+          # complemento registro  [294]
+          # num. sequencial       [6]        000001
+          "01REMESSA01COBRANCA       #{info_conta}#{empresa_mae.format_size(30).to_ascii}#{cod_banco}#{nome_banco}#{data_geracao}#{versao_layout}#{complemento}000001"
+        end
+
         # Detalhe do arquivo
         #
         # @param pagamento [PagamentoCnab400]
