@@ -52,7 +52,7 @@ module Brcobranca
         def versao_007?
           return false unless codigo_beneficiario
 
-          codigo_beneficiario.size > 6
+          codigo_beneficiario.size == 7 && codigo_beneficiario.to_i >= 1_100_000
         end
 
         # Informacoes da conta corrente do cedente

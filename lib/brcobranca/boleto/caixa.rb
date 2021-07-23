@@ -31,7 +31,13 @@ module Brcobranca
 
         super(campos)
       end
-      
+
+      def versao_007?
+        return false unless convenio
+
+        convenio.size == 7 && convenio.to_i >= 1_100_000
+      end
+
       def cod_carteira
         carteira == "RG" ? '1' : '2'
       end
@@ -54,7 +60,7 @@ module Brcobranca
       def convenio=(valor)
         return unless valor
 
-        @convenio = valor.size > 6 ? valor.to_s.rjust(7, '0') : valor.to_s.rjust(6, '0')
+        @convenio = versao_007? ? valor.to_s.rjust(7, '0') : valor.to_s.rjust(6, '0')
       end
 
       # Número seqüencial utilizado para identificar o boleto.
@@ -105,6 +111,12 @@ module Brcobranca
         ) { |total| 11 - (total % 11) }.to_s
       end
 
+      def convenio_e_dv
+        return convenio if versao_007?
+
+        "#{convenio}#{convenio_dv}"
+      end
+
       # Monta a segunda parte do código de barras.
       #  1 à 6: código do cedente, também conhecido como convênio
       #  7: dígito verificador do código do cedente
@@ -116,8 +128,7 @@ module Brcobranca
       #  25: dígito verificador do campo livre
       # @return [String]
       def codigo_barras_segunda_parte
-        campo_livre = "#{convenio}" \
-        "#{convenio_dv}" \
+        campo_livre = "#{convenio_e_dv}" \
         "#{nosso_numero[2..4]}" \
         "#{nosso_numero[0..0]}" \
         "#{nosso_numero[5..7]}" \
