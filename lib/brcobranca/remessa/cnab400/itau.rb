@@ -146,7 +146,7 @@ module Brcobranca
           detalhe << pagamento.formata_valor_multa(13)                      # percentual multa                      9[13]
           detalhe << ''.rjust(371, ' ')                                     # complemento do registro (brancos)     X[370]
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
-          detalhe.to_ascii
+          detalhe.remove_accents
         end
       end
     end

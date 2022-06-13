@@ -83,8 +83,8 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Caixa do
       expect(nome_banco.strip).to eq 'C ECON FEDERAL'
     end
 
-    it 'complemento deve retornar 294 caracteres' do
-      expect(caixa.complemento.size).to eq 294
+    it 'complemento deve retornar 291 caracteres' do
+      expect(caixa.complemento.size).to eq 291
     end
 
     it 'info_conta deve retornar com 20 posicoes as informacoes da conta' do

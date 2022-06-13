@@ -139,7 +139,8 @@ RSpec.describe Brcobranca::Remessa::Cnab400::Sicredi do
     context 'detalhe' do
       it 'informacoes devem estar posicionadas corretamente no detalhe' do
         detalhe = sicredi.monta_detalhe pagamento, 1
-        expect(detalhe[47..55]).to eq '171093943' # nosso numero
+
+        expect(detalhe[47..55]).to eq '000009394' # nosso numero
         expect(detalhe[1..1]).to eq 'A' # carteira
         expect(detalhe[120..125]).to eq Date.current.strftime('%d%m%y') # data de vencimento
         expect(detalhe[126..138]).to eq '0000000019990' # valor do documento

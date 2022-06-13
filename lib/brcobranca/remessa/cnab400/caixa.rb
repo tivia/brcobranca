@@ -105,7 +105,7 @@ module Brcobranca
           # data geracao          [6]        formato DDMMAA
           # complemento registro  [294]
           # num. sequencial       [6]        000001
-          "01REMESSA01COBRANCA       #{info_conta}#{empresa_mae.format_size(30).to_ascii}#{cod_banco}#{nome_banco}#{data_geracao}#{versao_layout}#{complemento}000001"
+          "01REMESSA01COBRANCA       #{info_conta}#{empresa_mae.format_size(30).remove_accents}#{cod_banco}#{nome_banco}#{data_geracao}#{versao_layout}#{complemento}000001"
         end
 
         # Detalhe do arquivo
@@ -165,7 +165,7 @@ module Brcobranca
             detalhe << '28'                                                   # Núm. dias p/ início do prot./ dev     9[02]
             detalhe << '1'                                                    # codigo da moeda                       9[01]    
             detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
-            detalhe.to_ascii
+            detalhe.remove_accents
         end
 
         def monta_detalhe_agencia

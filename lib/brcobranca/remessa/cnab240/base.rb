@@ -353,9 +353,10 @@ module Brcobranca
 
           arquivo << monta_trailer_arquivo(contador, total_linhas)
 
-          remittance = arquivo.join("\r\n").to_ascii.upcase
+          remittance = arquivo.join("\r\n").remove_accents.upcase
           remittance << "\n"
-          remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding, crlf_newline: true)
+          remittance.encode(remittance.encoding, universal_newline: true).encode(remittance.encoding,
+                                                                                 crlf_newline: true)
         end
 
         def total_segmentos(pagamentos)

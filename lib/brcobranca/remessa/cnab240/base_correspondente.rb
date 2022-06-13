@@ -244,7 +244,7 @@ module Brcobranca
 
           arquivo << monta_trailer_arquivo(contador, ((pagamentos.size * 2) + (contador * 2) + 2))
 
-          arquivo.join("\r\n").to_ascii.upcase
+          arquivo.join("\r\n").remove_accents.upcase
         end
 
         # Complemento do registro

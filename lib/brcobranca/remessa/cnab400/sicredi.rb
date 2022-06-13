@@ -79,7 +79,7 @@ module Brcobranca
           detalhe << 'A'                                                    # Tipo de Desconto B - Percentural      X[01]
           detalhe << 'A'                                                    # Tipo de Juros A - Valor   B - Perce   X[01]
           detalhe << ''.rjust(28, ' ')                                      # Espaço em branco                      X[28]
-          detalhe << pagamento.nosso_numero.rjust(9, '0')                   # Nosso Numero                          9[09]
+          detalhe << pagamento.nosso_numero.to_s.rjust(9, '0')              # Nosso Numero                          9[09]
           detalhe << ''.rjust(6, ' ')                                       # Espaço em branco                      X[06]
           detalhe << pagamento.data_emissao.strftime('%Y%m%d')              # Data da instrução                     9[08]
           detalhe << ''.rjust(1, ' ')                                       # Espaço em branco                      X[01]
@@ -120,7 +120,7 @@ module Brcobranca
           detalhe << ''.rjust(14, ' ')                                      # Doc. do Sacador/Avalista              X[14]
           detalhe << ''.rjust(41, ' ')                                      # Nome do Sacador/Avalista              X[14]
           detalhe << sequencial.to_s.rjust(6, '0')                          # numero do registro no arquivo         9[06]
-          detalhe.to_ascii
+          detalhe.remove_accents
         end
         
         def monta_detalhe_multa(pagamento, sequencial)
